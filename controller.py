@@ -79,10 +79,10 @@ def sendMessages(sensorList):
                 ser.flush()
                 line = ser.readline()
                 print(line.decode('utf-8'))
-                
+
 # postData to DjangoAPI
 def postData(data):
-        return
+        print(data)
 
 
 
