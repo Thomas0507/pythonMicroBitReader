@@ -45,7 +45,7 @@ class ThreadedUDPServer(socketserver.ThreadingMixIn, socketserver.UDPServer):
 # send serial message 
 # SERIALPORT = "/dev/ttyACM0"
 # BAUDRATE = 115200
-ser = serial.Serial("/dev/ttyACM0", baudrate = 115200)
+ser = serial.Serial("/dev/ttyACM1", baudrate = 115200)
 
 def initUART():        
         # ser = serial.Serial(SERIALPORT, BAUDRATE)
@@ -101,12 +101,15 @@ if __name__ == '__main__':
                 while (ser.isOpen()):
                         server_thread.start()
                         print("Server started at {} port {}".format(HOST, UDP_PORT))
-                        while(1):            
+                        ser.reset_input_buffer()
+                        ser.reset_output_buffer()
+                        while(1):                    
                                 print("Waiting for data...")
-                                ser.flush()
+                                # ser.flush()
                                 line = ser.readline()
-                                postData(line.decode('utf-8'))
-                                time.sleep(REFRESH_FETCH)       
+                                ser.reset_input_buffer()
+                                ser.reset_output_buffer()
+                                postData(line.decode('utf-8'))  
         except (KeyboardInterrupt, SystemExit):
                 server.shutdown()
                 server.server_close()
